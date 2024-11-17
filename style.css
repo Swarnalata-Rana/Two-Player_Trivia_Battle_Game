@@ -1,0 +1,41 @@
+body {
+    text-align: center;
+    margin: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.input-box,
+/* .category-selection, */
+.question-box {
+    margin: 20px auto;
+    width: 700px;
+}
+
+.input-box input,
+.question-box button    {
+    padding: 10px;
+    margin: 10px;
+    /* align-items: center; */
+    align-content: center;
+}
+.Two-Player-Question-Box{
+    display: flex; 
+    justify-content: space-between;
+    
+}
+.question-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.options {
+    margin-top: 20px;
+}
+
+.options div {
+    margin-bottom: 10px;
+}
