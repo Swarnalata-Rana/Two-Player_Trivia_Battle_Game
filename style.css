@@ -1,35 +1,43 @@
 body {
     text-align: center;
-    margin: 20px;
-}
+} 
 
 .hidden {
     display: none;
 }
 
-.input-box,
-/* .category-selection, */
-.question-box {
+.input-box {
     margin: 20px auto;
     width: 700px;
 }
 
-.input-box input,
-.question-box button    {
+.input-box input {
     padding: 10px;
-    margin: 10px;
-    /* align-items: center; */
-    align-content: center;
+    margin: 10px; 
 }
-.Two-Player-Question-Box{
-    display: flex; 
-    justify-content: space-between;
+.startGame
+{
     
 }
+
+.category-selection {
+    margin: 20px auto;
+    width: 700px;
+}
+
 .question-box {
+    margin: 20px auto;
+    width: 700px;
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 8px;
+}
+
+
+.question-box button {
+    /* padding: 10px;
+    margin: 10px; */
+    /* align-content: center; */
 }
 
 .options {
@@ -38,4 +46,9 @@ body {
 
 .options div {
     margin-bottom: 10px;
+}
+
+.Two-Player-Question-Box {
+    display: flex;
+    justify-content: space-between;
 }

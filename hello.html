@@ -1,5 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Game</title>
+</head>
+<body>
+    <!-- Player Setup Section -->
+    <section id="player-setup">
+        <h1>Trivia Game</h1>
+        <form id="player-form">
+            <label for="player1-name">Player 1 Name:</label>
+            <input type="text" id="player1-name" name="player1-name" required>
+            <br>
+            <label for="player2-name">Player 2 Name:</label>
+            <input type="text" id="player2-name" name="player2-name" required>
+            <br>
+            <button type="button" id="start-game">Start Game</button>
+        </form>
+    </section>
+
+    <!-- Category Selection Section -->
+    <section id="category-selection">
+        <h2>Select a Category</h2>
+        <div id="category-list">
+            <!-- List of categories will go here -->
+        </div>
+    </section>
+
+    <!-- Question and Answer Section -->
+    <section id="question-answer">
+        <h2 id="current-category">Current Category</h2>
+        <div id="question-box">
+            <p id="question-text">Question goes here</p>
+            <div id="answer-options">
+                <!-- Answer options will go here -->
+            </div>
+        </div>
+        <button type="button" id="next-question">Next Question</button>
+    </section>
+
+    <!-- Scoreboard Section -->
+    <section id="scoreboard">
+        <h2>Scoreboard</h2>
+        <div id="scores">
+            <p id="player1-score">Player 1 Score: 0</p>
+            <p id="player2-score">Player 2 Score: 0</p>
+        </div>
+        <div id="post-question-options">
+            <button type="button" id="select-new-category">Select New Category</button>
+            <button type="button" id="end-game">End Game</button>
+        </div>
+    </section>
+
+    <!-- Game End Section -->
+    <section id="game-end">
+        <h2>Game Over</h2>
+        <p id="final-scores">Final scores will appear here</p>
+        <h3 id="winner-announcement">Winner will be announced here</h3>
+    </section>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -75,14 +140,21 @@
                 </div>
             </div>
         </div>
-        <button id="nextQuestion">Next</button>
-
-        <div class="submit-section hidden">
-            <h2>Submit Here</h2>
-            <button id="submitGame">Submit</button>
-        </div>
+        <button id="nextQuestion">Next Question</button>
 
         <div class="score-section hidden">
+            <h2>Score board</h2>
+            <!-- <button id="submitGame">Score</button> -->
+            <p id="scorePlayer1">Player 1: 25</p>
+            <p id="scorePlayer2">Player 2: 35</p>
+        </div>
+
+        <button>Select New Catagory</button>
+        <button>Submit The Game</button>
+        <h2>Game Over</h2>
+        <div>Finnal winner is </div>
+
+        <!-- <div class="score-section hidden">
             <h2>Game Over</h2>
             <button id="showScore">Score</button>
             <div class="final-score hidden">
@@ -91,7 +163,7 @@
                 <p id="scorePlayer2">Player 2: 35</p>
                 <h3 id="winner">Winner: Chinu</h3>
             </div>
-        </div>
+        </div> -->
     </div>
     <script>
         document.getElementById("startGame").addEventListener("click", function () {
@@ -114,7 +186,7 @@
                 document.getElementById("question-easy1").textContent = `Type of question category ${category} `;
                 document.getElementById("question-easy2").textContent = `Type of question category ${category} `;
                 //disply submit btn
-                document.querySelector(".submit-section").classList.remove("hidden");
+                document.querySelector(".score-section").classList.remove("hidden");
                 //click ubmit btn 
                 document.getElementById("submitGame").addEventListener("click", function () {
                     //displya final score and score btn
@@ -130,5 +202,9 @@
 
         })
     </script>
+
 </body>
+
 </html>
+
+ 
