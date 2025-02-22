@@ -17,8 +17,8 @@ document.getElementById("startGame").addEventListener("click", function () {
         const category = document.getElementById("categorySelect").value;
         // display Que..
         document.querySelector(".question-box").classList.remove("hidden");
-        document.getElementById("question-easy1").textContent = `Type of question category ${category} `;
-        document.getElementById("question-easy2").textContent = `Type of question category ${category} `;
+        document.getElementById("question-easy1").textContent = ` ${category} `;
+        // document.getElementById("question-easy2").textContent = `${category} `;
         //disply submit btn
         document.querySelector(".score-board").classList.remove("hidden");
         //click ubmit btn 

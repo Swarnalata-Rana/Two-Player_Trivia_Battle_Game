@@ -1,22 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Trivia Quiz</title>
 </head>
-
 <body>
-    <div class="">
-        <h2>Enter Player Names</h2>
-        <input type="text" id="player1" placeholder="Player 1 Name">
-        <input type="text" id="player2" placeholder="Player 2 Name">
-        <a href="category.html">
-            <button> Start Game</button>
-        </a>
-    </div>
-</body>
-<script src="script.js"></script>
 
+    <h1>Trivia Quiz</h1>
+
+    <label for="category">Select Category:</label>
+    <select id="category">
+        <option value="history">History</option>
+        <option value="science">Science</option>
+        <option value="geography">Geography</option>
+    </select>
+
+    <button onclick="startQuiz()">Start Quiz</button>
+
+    <div id="questionBox" class="hidden">
+        <h2 id="questionText"></h2>
+        <div id="options"></div>
+    </div>
+
+    <script>
+        let questions = [];
+        let currentIndex = 0;
+
+        function fetchQuestions(category) {
+            let easy1, easy2, medium1, medium2, hard1, hard2;
+
+            const easy1Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=easy&limit=1`;
+            const easy2Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=easy&limit=1`;
+            const medium1Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=medium&limit=1`;
+            const medium2Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=medium&limit=1`;
+            const hard1Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=hard&limit=1`;
+            const hard2Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=hard&limit=1`;
+
+            fetch(easy1Url)
+                .then(response => response.json())
+                .then(data => {
+                    easy1 = data;
+                    return fetch(easy2Url);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    easy2 = data;
+                    return fetch(medium1Url);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    medium1 = data;
+                    return fetch(medium2Url);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    medium2 = data;
+                    return fetch(hard1Url);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hard1 = data;
+                    return fetch(hard2Url);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hard2 = data;
+
+                    // Combine all fetched questions
+                    questions = [...easy1, ...easy2, ...medium1, ...medium2, ...hard1, ...hard2];
+
+                    if (questions.length > 0) {
+                        document.getElementById("questionBox").classList.remove("hidden");
+                        displayQuestion();
+                    } 
+                })
+                .catch(error => console.error("Error fetching questions:", error));
+        }
+
+        function startQuiz() {
+            const selectedCategory = document.getElementById("category").value;
+            fetchQuestions(selectedCategory);
+        }
+
+        function displayQuestion() {
+            if (currentIndex < questions.length) {
+                const questionData = questions[currentIndex];
+                document.getElementById("questionText").innerText = questionData.question.text;
+
+                const optionsDiv = document.getElementById("options");
+                optionsDiv.innerHTML = ""; // Clear previous options
+
+                // Combine correct and incorrect answers and shuffle
+                let options = [...questionData.incorrectAnswers, questionData.correctAnswer];
+                options = options.sort(() => Math.random() - 0.5);
+
+                options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.innerText = option;
+                    button.onclick = () => checkAnswer(option, questionData.correctAnswer);
+                    optionsDiv.appendChild(button);
+                });
+
+                currentIndex++;
+            } else {
+                document.getElementById("questionText").innerText = "Quiz Over!";
+                document.getElementById("options").innerHTML = "";
+            }
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                alert("Correct! 🎉");
+            } else {
+                alert(`Wrong! The correct answer was: ${correct}`);
+            }
+            displayQuestion();
+        }
+    </script>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        button {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</body>
 </html>

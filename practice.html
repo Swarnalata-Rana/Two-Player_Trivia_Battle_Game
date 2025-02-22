@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Game</title>
+</head>
+
+<body>
+    <div id="player-section">
+        <input type="text" id="player1" placeholder="Player 1 Name">
+        <input type="text" id="player2" placeholder="Player 2 Name">
+        <button id="startGame">Start Game</button>
+    </div>
+    <div id="category-selection-section" style="display: none;">
+        <div id="player1-name-display"></div>
+        <div id="player2-name-display"></div>
+        <select id="category-dropdown">
+            <option value="music">Music</option>
+            <option value="history">History</option>
+            <option value="science">Science</option>
+        </select>
+        <button id="select-category-button">Select Category</button>
+    </div>
+    <div id="question-display-section" style="display: none;">
+        <h2 id="question-text"></h2>
+        <div class="options">
+            <div>
+                <input type="radio" id="option1" name="answer" value="Option 1">
+                <label for="option1">Option 1</label>
+            </div>
+            <div>
+                <input type="radio" id="option2" name="answer" value="Option 2">
+                <label for="option2">Option 2</label>
+            </div>
+            <div>
+                <input type="radio" id="option3" name="answer" value="Option 3">
+                <label for="option3">Option 3</label>
+            </div>
+            <div>
+                <input type="radio" id="option4" name="answer" value="Option 4">
+                <label for="option4">Option 4</label>
+            </div>
+        </div>
+        <button id="next-question-button">Next Question</button>
+        <p id="score-player1">Player 1 Score: 0</p>
+        <p id="score-player2">Player 2 Score: 0</p>
+    </div>
+
+    <div id="continue-game-and-end-game-section" style="display: none;">
+        <button id="continue-game-button">Select New Category</button>
+        <button id="end-game-button">End The Game</button>
+    </div>
+
+    <div id="winner-section" style="display: none;"></div>
+</body>
+
+
+<script>
+
+    let player1Score = 0;
+    let player2Score = 0;
+    let currentPlayer = 1;
+
+    const difficultyRating = {
+        easy: 10,
+        medium: 15,
+        hard: 20
+    };
+
+
+    let startGameButton = document.getElementById("startGame");
+    startGameButton.addEventListener("click", function () {
+
+        let player1Name = document.getElementById("player1").value;
+        let player2Name = document.getElementById("player2").value;
+
+        let player1NameDisplay = document.getElementById("player1-name-display");
+        let player2NameDisplay = document.getElementById("player2-name-display");
+
+        player1NameDisplay.innerHTML = `Player 1: ${player1Name}`;
+        player2NameDisplay.innerHTML = `Player 2: ${player2Name}`;
+
+        let playerSection = document.getElementById("player-section");
+        playerSection.style.display = "none";
+
+        let categorySelectionSection = document.getElementById("category-selection-section");
+        categorySelectionSection.style.display = "block";
+    });
+
+    let selectCategoryButton = document.getElementById("select-category-button");
+    selectCategoryButton.addEventListener("click", function () {
+        let categoryDropdown = document.getElementById("category-dropdown");
+        selectedCategory = categoryDropdown.value;
+        categoryDropdown.remove(categoryDropdown.selectedIndex);
+        categorySelectionSection.style.display = "none";
+        fetchQuestions(selectedCategory);
+    });
+
+    let nextQuestionButton = document.getElementById("next-question-button");
+    nextQuestionButton.addEventListener("click", function () {
+        if (currentQuestionIndex >= 6) {
+            questionDisplaySection = document.getElementById("question-display-section");
+            questionDisplaySection.style.display = "none";
+            continueGameAndEndGameSection = document.getElementById("continue-game-and-end-game-section");
+            continueGameAndEndGameSection.style.display = "block";
+        }
+        else {
+            displayQuestion();
+        }
+    });
+
+    continueGameButton = document.getElementById("continue-game-button");
+    continueGameButton.addEventListener("click", function () {
+        continueGameAndEndGameSection.style.display = "none";
+        categorySelectionSection.style.display = "block";
+    });
+
+    let endGameButton = document.getElementById("end-game-button");
+    endGameButton.addEventListener("click", function () {
+        continueGameAndEndGameSection.style.display = "none";
+        winnerSection = document.getElementById("winner-section");
+        winnerSection.style.display = "block";
+        displayWinner();
+    });
+
+
+    function fetchQuestions(category) {
+        const easy1Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=easy&limit=1`;
+        const easy2Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=easy&limit=1`;
+        const medium1Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=medium&limit=1`;
+        const medium2Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=medium&limit=1`;
+        const hard1Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=hard&limit=1`;
+        const hard2Url = `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=hard&limit=1`;
+
+        fetch(easy1Url)
+            .then(response => response.json())
+            .then(data => {
+                easy1 = data;
+                return fetch(easy2Url);
+            })
+            .then(response => response.json())
+            .then(data => {
+                easy2 = data;
+                return fetch(medium1Url);
+            })
+            .then(response => response.json())
+            .then(data => {
+                medium1 = data;
+                return fetch(medium2Url);
+            })
+            .then(response => response.json())
+            .then(data => {
+                medium2 = data;
+                return fetch(hard1Url);
+            })
+            .then(response => response.json())
+            .then(data => {
+                hard1 = data;
+                return fetch(hard2Url);
+            })
+            .then(response => response.json())
+            .then(data => {
+                hard2 = data;
+                questions = [easy1, easy2, medium1, medium2, hard1, hard2];
+                currentQuestionIndex = 0;
+                questionDisplaySection.style.display = "block";
+                displayQuestion();
+            })
+    }
+
+
+    function displayQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            const questionText = document.getElementById("question-text");
+            questionText.innerHTML = questions[currentQuestionIndex].question.text;
+            displayOptions(questions[currentQuestionIndex]);
+            currentQuestionIndex++;
+        }
+    }
+
+
+    function displayOptions() {
+        const correctAnswer = questions[currentQuestionIndex].correctAnswer;
+        const incorrectAnswers = questions[currentQuestionIndex].incorrectAnswers;
+        const options = [...incorrectAnswers, correctAnswer];
+        options.math.random()
+
+        const optionInputs = document.querySelectorAll(".option-input");
+        const optionLabels = document.querySelectorAll(".option-label");
+
+        let i = 0;
+        let selectedOption = "";
+
+        while (i < optionInputs.length) {
+            optionInputs[i].value = options[i];
+            optionLabels[i].innerHTML = options[i];
+
+            optionInputs[i].addEventListener("click", function () {
+                selectedOption = optionInputs[j].value;
+            });
+
+            i++;
+        }
+
+    }
+
+    function checkAnswer(selectedOption) {
+        const selectedOption = "User Selected Option";
+        const currentQuestion = questions[currentQuestionIndex];
+        const correctAnswer = currentQuestion.correctAnswer;
+        const difficulty = currentQuestion.difficulty;
+
+        if (selectedOption === correctAnswer) {
+            if (currentPlayer === 1) {
+                player1Score += difficultyRating[difficulty];
+                currentPlayer = 2;
+            } else {
+                player2Score += difficultyRating[difficulty];
+                currentPlayer = 1;
+            }
+        }
+
+    }
+
+    function displayWinner() {
+        if (player1Score > player2Score) {
+            winnerDisplay.innerHTML = "Winner is Player 1";
+        } else if (player2Score > player1Score) {
+            winnerDisplay.innerHTML = "Winner is Player 2";
+        } else {
+            winnerDisplay.innerHTML = "It's Tie ";
+        }
+
+    }
+</script>
+
+</html>

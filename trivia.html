@@ -1,0 +1,129 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz</title>
+</head>
+<body>
+
+    <h1>Trivia Quiz</h1>
+
+    <label for="category">Select Category:</label>
+    <select id="category">
+        <option value="history">History</option>
+        <option value="science">Science</option>
+        <option value="geography">Geography</option>
+    </select>
+
+    <button onclick="startQuiz()">Start Quiz</button>
+
+    <div id="questionBox" class="hidden">
+        <h2 id="questionText"></h2>
+        <div id="options"></div>
+    </div>
+
+    <script>
+        let questions = [];
+        let currentIndex = 0;
+
+        function fetchQuestions(category) {
+            questions = []; // Clear previous questions
+            currentIndex = 0; // Reset index
+
+            const urls = [
+                `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=easy&limit=1`,
+                `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=easy&limit=1`,
+                `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=medium&limit=1`,
+                `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=medium&limit=1`,
+                `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=hard&limit=1`,
+                `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=hard&limit=1`
+            ];
+
+            // Fetch all questions asynchronously
+            Promise.all(urls.map(url => fetch(url).then(response => response.json())))
+                .then(data => {
+                    questions = data.flat(); // Flatten the array if needed
+                    console.log()
+                    if (questions.length > 0) {
+                        document.getElementById("questionBox").classList.remove("hidden");
+                        displayQuestion();
+                    }
+                })
+                .catch(error => console.error("Error fetching questions:", error));
+        }
+
+        function startQuiz() {
+            const selectedCategory = document.getElementById("category").value;
+            fetchQuestions(selectedCategory);
+        }
+
+        function displayQuestion() {
+            if (currentIndex < questions.length) {
+                const questionData = questions[currentIndex];
+                document.getElementById("questionText").innerText = questionData.question.text;
+
+                displayOptions(questionData); // Call function to display options
+
+                currentIndex++;
+            } else {
+                document.getElementById("questionText").innerText = "Quiz Over!";
+                document.getElementById("options").innerHTML = "";
+            }
+        }
+
+        function displayOptions(questionData) {
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = ""; // Clear previous options
+
+            // Combine correct and incorrect answers and shuffle
+            let options = [...questionData.incorrectAnswers, questionData.correctAnswer];
+            options = options.sort(() => Math.random() - 0.5);
+
+            options.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = () => checkAnswer(option, questionData.correctAnswer);
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                alert("Correct! 🎉");
+            } else {
+                alert(`Wrong! The correct answer was: ${correct}`);
+            }
+            displayQuestion();
+        }
+    </script>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        button {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</body>
+</html> -->
+
+<!--  -->
+
+
+
+
+
